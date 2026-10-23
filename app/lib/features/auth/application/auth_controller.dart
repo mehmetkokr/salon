@@ -25,6 +25,27 @@ class AuthController extends AsyncNotifier<SignedInUser?> {
     state = await AsyncValue.guard(() => ref.read(authGatewayProvider).signInAsGuest());
   }
 
+  /// E-postayla giriş ya da yeni hesap. Hata olursa oyuncuya gösterilecek
+  /// metni döner, durum değişmez; böylece hata giriş penceresinde kalır.
+  Future<String?> signInWithEmail(String email, String password, {bool create = false}) =>
+      _attempt(() => ref.read(authGatewayProvider).signInWithEmail(email, password, create: create));
+
+  /// Misafir hesabını e-postaya bağlar (profili kaydeder).
+  Future<String?> linkEmail(String email, String password, {String? username}) =>
+      _attempt(() => ref.read(authGatewayProvider).linkEmail(email, password, username: username));
+
+  Future<String?> _attempt(Future<SignedInUser> Function() run) async {
+    try {
+      final user = await run();
+      if (ref.mounted) state = AsyncData(user);
+      return null;
+    } on AuthFailure catch (e) {
+      return e.message;
+    } catch (_) {
+      return 'Sunucuya bağlanılamadı. İnternet bağlantını kontrol edip tekrar dene.';
+    }
+  }
+
   Future<void> signOut() async {
     await ref.read(authGatewayProvider).signOut();
     state = const AsyncData(null);

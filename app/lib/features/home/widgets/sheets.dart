@@ -13,6 +13,7 @@ import '../../../core/design/widgets/salon_button.dart';
 import '../../../core/design/widgets/selectables.dart';
 import '../../../core/services/nakama_service.dart';
 import '../../auth/application/auth_controller.dart';
+import '../../auth/presentation/email_sheet.dart';
 import '../../profile/profile_controller.dart';
 import '../../settings/customization_providers.dart';
 
@@ -359,6 +360,14 @@ class SettingsSheet extends ConsumerWidget {
   }
 }
 
+/// Misafirin hesabını e-postaya bağlama penceresi.
+Future<void> showSaveProfileSheet(BuildContext context, SignedInUser user) => showSalonSheet<void>(
+      context,
+      widthFactor: 0.8,
+      maxWidth: 720,
+      builder: (_) => EmailAuthSheet(mode: EmailSheetMode.saveGuest, currentName: user.username),
+    );
+
 /// Profil özeti: kimlik, seviye ve (misafirse) profili kaydetme çağrısı.
 class ProfileSheet extends ConsumerWidget {
   const ProfileSheet({super.key, required this.user});
@@ -422,7 +431,10 @@ class ProfileSheet extends ConsumerWidget {
                   label: 'Profilini kaydet',
                   icon: Icons.verified_user_outlined,
                   compact: true,
-                  onPressed: () => showSoon(context, 'Profil kaydetme bir sonraki adımda'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showSaveProfileSheet(context, user);
+                  },
                 ),
               ],
             ],

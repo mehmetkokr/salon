@@ -8,10 +8,12 @@ import '../../../core/design/tokens.dart';
 import '../../../core/design/widgets/glass_panel.dart';
 import '../../../core/design/widgets/salon_button.dart';
 import '../../../core/design/widgets/salon_logo.dart';
+import '../../home/widgets/sheets.dart' show showSalonSheet;
 import '../application/auth_controller.dart';
+import 'email_sheet.dart';
 
 /// Giriş ekranı (yatay). Solda logo ve slogan, sağda giriş seçenekleri.
-/// Şimdilik misafir girişi çalışır; Google, Apple ve e-posta/telefon sırada.
+/// Misafir ve e-posta girişi çalışır; Google ve Apple sırada.
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
@@ -102,12 +104,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               _AppleButton(onPressed: _busy ? null : () => _soon('Apple')),
                               const SizedBox(height: Space.sm),
                               SalonButton(
-                                label: 'E-posta / Telefon ile giriş yap',
+                                label: 'E-posta ile giriş yap',
                                 icon: Icons.mail_outline_rounded,
                                 kind: SalonButtonKind.secondary,
                                 compact: true,
                                 expand: true,
-                                onPressed: _busy ? null : () => _soon('E-posta / telefon'),
+                                onPressed: _busy
+                                    ? null
+                                    : () => showSalonSheet<void>(context,
+                                        widthFactor: 0.8,
+                                        maxWidth: 720,
+                                        builder: (_) => const EmailAuthSheet(mode: EmailSheetMode.signIn)),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: Space.md),

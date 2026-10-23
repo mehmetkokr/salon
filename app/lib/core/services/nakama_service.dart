@@ -50,6 +50,14 @@ abstract interface class AuthGateway {
   /// Cihaz kimliğiyle misafir girişi. Hesap yoksa oluşturur.
   Future<SignedInUser> signInAsGuest();
 
+  /// E-posta ve şifreyle giriş. [create] ise hesap yoksa açılır.
+  /// Oyuncuya gösterilecek hatalar [AuthFailure] olur.
+  Future<SignedInUser> signInWithEmail(String email, String password, {bool create = false});
+
+  /// Misafir hesabını e-postaya bağlar; çipler ve seviye aynı hesapta kalır.
+  /// [username] verilirse oyuncu adı da değişir.
+  Future<SignedInUser> linkEmail(String email, String password, {String? username});
+
   Future<void> signOut();
 
   SocketStatus get socketStatus;
@@ -71,6 +79,36 @@ class TableMessage {
 
   final int opCode;
   final Map<String, dynamic> body;
+}
+
+/// Giriş ya da hesap kaydetme hatası; [message] oyuncuya gösterilir.
+class AuthFailure implements Exception {
+  const AuthFailure(this.message);
+
+  final String message;
+
+  /// Nakama hata metnini oyuncunun anlayacağı cümleye çevirir.
+  static AuthFailure from(Object error) {
+    final t = error.toString().toLowerCase();
+    if (t.contains('username') && (t.contains('in use') || t.contains('exists'))) {
+      return const AuthFailure('Bu oyuncu adı alınmış, başka bir ad dene.');
+    }
+    if (t.contains('in use') || t.contains('already exists')) {
+      return const AuthFailure('Bu e-posta başka bir hesaba bağlı. O hesapla giriş yapabilirsin.');
+    }
+    if (t.contains('password must be')) return const AuthFailure('Şifre en az 8 karakter olmalı.');
+    if (t.contains('email address')) return const AuthFailure('Geçerli bir e-posta adresi yaz.');
+    if (t.contains('not found')) {
+      return const AuthFailure('Bu e-postayla açılmış hesap yok. “Yeni hesap aç”ı deneyebilirsin.');
+    }
+    if (t.contains('invalid credentials') || t.contains('unauthenticated') || t.contains('401')) {
+      return const AuthFailure('E-posta ya da şifre yanlış.');
+    }
+    return const AuthFailure('Sunucuya bağlanılamadı. İnternet bağlantını kontrol edip tekrar dene.');
+  }
+
+  @override
+  String toString() => message;
 }
 
 /// Sunucunun bulduğu ya da kurduğu masa.
@@ -172,6 +210,40 @@ class NakamaService implements AuthGateway, ProfileGateway, TableGateway {
         rethrow;
       }
     }
+  }
+
+  @override
+  Future<SignedInUser> signInWithEmail(String email, String password, {bool create = false}) async {
+    for (var attempt = 0;; attempt++) {
+      try {
+        final session = await client.authenticateEmail(
+          email: email.trim(),
+          password: password,
+          create: create,
+          username: create ? _randomGuestName() : null,
+        );
+        return await _completeSignIn(session, isGuest: false);
+      } catch (error) {
+        if (create && attempt < 3 && error.toString().toLowerCase().contains('username')) continue;
+        throw AuthFailure.from(error);
+      }
+    }
+  }
+
+  @override
+  Future<SignedInUser> linkEmail(String email, String password, {String? username}) async {
+    await _refreshIfNeeded();
+    final session = _session;
+    if (session == null) throw StateError('Oturum yok');
+    try {
+      // Önce ad: alınmışsa hiçbir şey değişmeden oyuncuya söylenir.
+      final name = username?.trim();
+      if (name != null && name.isNotEmpty) await client.updateAccount(session: session, username: name);
+      await client.linkEmail(session: session, email: email.trim(), password: password);
+    } catch (error) {
+      throw AuthFailure.from(error);
+    }
+    return _completeSignIn(session, isGuest: false);
   }
 
   @override

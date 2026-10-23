@@ -17,6 +17,14 @@ class _Gateway implements AuthGateway {
   Future<void> signOut() async {}
 
   @override
+  Future<SignedInUser> signInWithEmail(String email, String password, {bool create = false}) async =>
+      SignedInUser(userId: 'u2', username: email.split('@').first, isGuest: false, isNewAccount: create);
+
+  @override
+  Future<SignedInUser> linkEmail(String email, String password, {String? username}) async =>
+      SignedInUser(userId: 'u1', username: username ?? 'Oyuncu_1234', isGuest: false, isNewAccount: false);
+
+  @override
   SocketStatus get socketStatus => SocketStatus.connected;
 
   @override

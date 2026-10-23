@@ -225,7 +225,7 @@ class _Header extends ConsumerWidget {
             icon: daily ? null : Icons.shield_outlined,
             kind: SalonButtonKind.glass,
             compact: true,
-            onPressed: () => showSalonSheet<void>(context, builder: (_) => ProfileSheet(user: user)),
+            onPressed: () => showSaveProfileSheet(context, user),
           ),
         ],
         const Spacer(),
