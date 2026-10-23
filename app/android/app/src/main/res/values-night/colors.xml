@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Açılış ekranı rengi: koyu tema Gece kahvehanesi (tek palet) -->
+    <color name="splash_background">#0B1418</color>
+</resources>

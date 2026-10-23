@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Salon · Demo</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root{color-scheme:light dark}
+body{margin:0;min-height:100vh;background:#0B0E18;color:#E8E8EE;font-family:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;box-sizing:border-box}
+.wrap{width:min(100%,1100px)}
+.app{--bg:#0E1320;--bg2:#1B2747;--pn:rgba(24,33,58,.84);--pn2:rgba(255,255,255,.08);--bd:rgba(255,255,255,.14);--tx:#EDEAE2;--sb:#A3ABC0;--acc:#D4AF37;--onA:#0E1320;--rw:#E2B84A;--ok:#3BB273;--er:#F08080;--bez:#05070D;--apl:#fff;--aplT:#000;--veil:rgba(10,14,28,.64);--scrim:rgba(4,6,14,.55);
+position:relative;width:100%;aspect-ratio:2.17/1;border-radius:34px;overflow:hidden;overflow:clip;background:var(--bg);color:var(--tx);font-size:13px;box-sizing:border-box;border:7px solid var(--bez);user-select:none;-webkit-user-select:none}
+.app.lt{--bg:#EAF6F3;--bg2:#CBEBE3;--pn:rgba(255,255,255,.88);--pn2:rgba(11,122,110,.08);--bd:#BCDFD6;--tx:#0F2E2A;--sb:#4A6964;--acc:#0B7A6E;--onA:#fff;--rw:#9A6212;--ok:#16A34A;--er:#C42B2B;--bez:#1C1C1E;--apl:#000;--aplT:#fff;--veil:rgba(234,246,243,.72);--scrim:rgba(10,40,44,.35)}
+.app:before{content:"";position:absolute;left:7px;top:50%;width:7px;height:66px;margin-top:-33px;border-radius:4px;background:#000;z-index:60}
+.bgw{position:absolute;inset:0;overflow:hidden}
+.bgp{position:absolute;inset:-30px;background-size:cover;background-position:center;filter:blur(18px) saturate(120%);transform:scale(1.05)}
+.veil{position:absolute;inset:0;background:var(--veil)}
+.scr{position:absolute;inset:0;padding:14px 24px 14px 34px;display:flex;gap:14px;animation:fi .35s ease-out}
+.glass{background:var(--pn);border:1px solid var(--bd);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%)}
+.b{height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--pn);color:var(--tx);transition:transform .12s;padding:0 14px}
+.b:active,.row:active,.opt:active{transform:scale(.97)}
+.gold{background:var(--acc);color:var(--onA);border:none}
+.sb{color:var(--sb);font-size:12px}
+.ch{border:1px solid var(--bd);border-radius:15px;padding:5px 12px;font-size:12px;white-space:nowrap;cursor:pointer;color:var(--sb);background:var(--pn)}
+.ch.on{background:var(--acc);color:var(--onA);border-color:var(--acc);font-weight:500}
+.ib{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer;position:relative;color:var(--tx);flex:none}
+.dot{position:absolute;top:6px;right:7px;width:8px;height:8px;border-radius:50%;background:#FF5A5F;border:2px solid var(--bg)}
+.row{border-radius:13px;padding:0 12px;height:44px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .12s}
+.tile{flex:none;border-radius:6px;background:linear-gradient(#FFFDF7,#EFE6D1);box-shadow:inset 0 1px 0 #fff,inset 0 -2px 0 #D6C9AC,1px 3px 4px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;font-weight:500}
+.tile span{font-size:11px;margin-top:2px}
+.pc{flex:none;width:38px;height:52px;border-radius:5px;background:#FAF8F3;box-shadow:1px 3px 5px rgba(0,0,0,.35);padding:3px 5px;box-sizing:border-box;font-size:14px;font-weight:500;line-height:1.1}
+.ck{width:28px;height:28px;border-radius:50%;display:inline-block;flex:none;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25),0 2px 4px rgba(0,0,0,.35)}
+.die{border-radius:10px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18),2px 5px 8px rgba(0,0,0,.4);display:grid;grid-template-columns:repeat(3,1fr);box-sizing:border-box;gap:2px;flex:none}
+.die i{border-radius:50%;align-self:center;justify-self:center}
+.av{border-radius:50%;border:2px solid var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:500;flex:none}
+.lvb{background:var(--acc);color:var(--onA);font-size:11px;font-weight:500;border-radius:8px;padding:1px 6px;white-space:nowrap}
+.seg{display:flex;border:1px solid var(--bd);border-radius:12px;padding:3px;gap:3px;background:var(--pn)}
+.seg div{flex:1;text-align:center;padding:7px 6px;border-radius:9px;cursor:pointer;color:var(--sb);white-space:nowrap}
+.seg .on{background:var(--pn2);color:var(--tx);font-weight:500;box-shadow:0 0 0 1px var(--bd)}
+input.f{background:var(--pn);border:1px solid var(--bd);color:var(--tx);border-radius:12px;height:44px;font-size:14px;padding:0 12px;font-family:inherit;box-sizing:border-box;width:100%;outline:none}
+input.f:focus{border-color:var(--acc)}
+.err{font-size:12px;color:var(--er);min-height:15px}
+.nav{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:18px;z-index:20}
+.nav div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:92px;height:44px;border-radius:14px;cursor:pointer;color:var(--sb);font-size:11px}
+.nav i{font-size:20px}.nav .on{color:var(--acc);background:var(--pn2)}
+.gcard{position:relative;flex:none;width:33%;border-radius:22px;overflow:hidden;cursor:pointer;background-size:cover;background-position:center;scroll-snap-align:start;transition:transform .15s;display:flex;flex-direction:column;justify-content:flex-end}
+.gcard:hover{transform:translateY(-3px)}
+.gcard .sh{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.05) 20%,rgba(0,0,0,.8))}
+.gcard .in{position:relative;padding:12px 14px;color:#fff;display:flex;flex-direction:column;gap:6px}
+.gcard b{font-size:18px;font-weight:500}
+.tag{font-size:11px;border-radius:8px;padding:2px 8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap}
+.pieces{position:absolute;right:14px;top:12px;display:flex;gap:4px;align-items:center}
+.hs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;flex:1;min-height:0;padding-bottom:2px}
+.hs::-webkit-scrollbar{display:none}
+.ov{position:absolute;inset:0;background:var(--scrim);z-index:30;animation:fi .2s ease-out;display:flex}
+.sheet{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:68%;border-radius:24px 24px 0 0;padding:10px 18px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;animation:up .32s cubic-bezier(.2,.8,.2,1)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--bd);align-self:center}
+.dlg{margin:auto;border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;animation:pop .22s ease-out}
+.opt{flex:1;border-radius:18px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:transform .12s}
+.opt i{font-size:26px;color:var(--acc)}
+.opt b{font-size:16px;font-weight:500}
+.drop{position:absolute;right:70px;top:58px;width:300px;border-radius:16px;padding:6px;z-index:31;animation:pop .18s ease-out}
+.ni{display:flex;gap:10px;align-items:center;padding:9px;border-radius:11px}
+.ni:hover{background:var(--pn2)}
+.tg{width:42px;height:25px;border-radius:13px;position:relative;cursor:pointer;flex:none;border:1px solid var(--bd)}
+.tg span{position:absolute;top:2px;width:19px;height:19px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.item{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.prev{height:58px;border-radius:11px;display:flex;align-items:center;justify-content:center;gap:4px;overflow:hidden}
+.pod{display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:16px 16px 0 0;padding:8px 6px;justify-content:flex-end}
+.tst{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:var(--pn);border:1px solid var(--acc);color:var(--tx);border-radius:12px;padding:8px 16px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50;white-space:nowrap;backdrop-filter:blur(12px)}
+iframe.table{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5;background:#000}
+.note{font-size:12px;color:#8A8FA6;text-align:center}
+.logo-wrap{position:relative;overflow:hidden;border-radius:30px;line-height:0}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes up{from{transform:translate(-50%,100%)}to{transform:translate(-50%,0)}}
+@media (prefers-reduced-motion:no-preference){
+.lg-in{animation:lgin .8s cubic-bezier(.2,.8,.2,1) both}@keyframes lgin{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+.logo-wrap:after{content:"";position:absolute;top:-30%;bottom:-30%;width:46px;left:-80px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);animation:sh 1s ease-in-out .35s 1 both}@keyframes sh{to{left:120%}}
+.nm-in{animation:nmin .6s cubic-bezier(.2,.8,.2,1) .65s both}@keyframes nmin{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.roll{animation:roll .9s cubic-bezier(.4,0,.2,1) infinite}@keyframes roll{0%{transform:rotate(0) translateY(0)}50%{transform:rotate(200deg) translateY(-10px)}100%{transform:rotate(360deg) translateY(0)}}
+.roll2{animation:roll .9s cubic-bezier(.4,0,.2,1) .15s infinite reverse}
+.shuf{animation:shuf .9s ease-in-out infinite alternate}@keyframes shuf{to{transform:translateX(18px) rotate(6deg)}}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="app" id="app" role="application" aria-label="Salon demo"></div></div>
+<div class="wrap note">Telefonu yan çevirmiş gibi düşünün. Masadan çıkmak için masadaki sağ üst butonu kullanın.</div>
+<script>
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NC=['#C8262C','#1F5FC4','#C27D0A','#16181D'],SY=['●','▲','■','◆'];
+const IMG={kap:'../assets/backgrounds/kapadokya.jpg',uzu:'../assets/backgrounds/uzungol.jpg',pam:'../assets/backgrounds/pamukkale.jpg',olu:'../assets/backgrounds/oludeniz.jpg',kizA:'../assets/backgrounds/kiz-kulesi-aksam.jpg',kizG:'../assets/backgrounds/kiz-kulesi-gunduz.jpg'};
+const SAL=[{k:'kap',name:'Kapadokya',bet:100,min:1000},{k:'uzu',name:'Uzungöl',bet:500,min:5000},{k:'pam',name:'Pamukkale',bet:1000,min:10000},{k:'olu',name:'Ölüdeniz',bet:2500,min:25000},{k:'kiz',name:'Kız Kulesi',bet:5000,min:50000}];
+const GAMES={okey:{name:'Okey / 101 Salonu',short:'Okey',tags:['Düz','Katlamalı','101'],modes:['Katlamasız','Katlamalı','101'],on:5280,img:'kizA'},
+ tavla:{name:'Tavla Salonu',short:'Tavla',tags:['Klasik tekli maç'],modes:['Klasik tekli maç'],on:2075,img:'kap'},
+ kart:{name:'Kart Oyunları Salonu',short:'Kart',tags:['Eşli Batak','İhaleli','Pişti'],modes:['Eşli Batak','İhaleli','Pişti'],on:1840,img:'olu'}};
+const BETS=[100,500,1000,2500,5000,10000];
+const AVG=['linear-gradient(135deg,#5B7BD5,#2E3F8F)','linear-gradient(135deg,#2FB68E,#11705A)','linear-gradient(135deg,#E26D9A,#9A2E5C)','linear-gradient(135deg,#F09A4A,#A5521B)','linear-gradient(135deg,#9B7BE0,#4E2F99)','linear-gradient(135deg,#4FB3D9,#1D6E8F)'];
+// Arkadaş durumu: st = lobby | table | ghost | tavla | off
+const FR=[{n:'Ayşe',g:2,st:'table',room:{name:'Ahmet’in masası',host:'Ahmet',mode:'101 Okey',hand:5,bet:1000,sal:'pam'}},
+ {n:'Can',g:1,st:'lobby'},
+ {n:'Zeynep',g:4,st:'table',room:{name:'Zeynep’in masası',host:'Zeynep',mode:'Katlamalı',hand:2,bet:5000,sal:'kiz',lock:true}},
+ {n:'Elif',g:3,st:'ghost'},
+ {n:'Burak',g:5,st:'tavla',hand:3},
+ {n:'Emre',g:0,st:'off',seen:'2 saat önce'}];
+const frLine=x=>x.st=='table'?`${x.room.host==x.n?'Kendi masasında':`${x.room.host}’in masasında`} · ${x.room.mode} · ${x.room.hand}. el${x.room.lock?' · şifreli':''}`:x.st=='ghost'?'Gizli bir masada':x.st=='tavla'?`Tavla oynuyor · Klasik · ${x.hand}. el`:x.st=='lobby'?'Lobide · müsait':`${x.seen} çevrimiçiydi`;
+const LB={g:[['Kral_Okey',48200,1],['Selin',41750,2],['Murat58',39900,3],['Ahmet',35120,3],['Deniz',33010,4],['Okeyci_Baba',30440,5],['Gül',28900,1]],h:[['Selin',212400,2],['Kral_Okey',198700,1],['Murat58',176300,3],['Burak',150200,5],['Ayşe',141800,2],['Ahmet',139050,3],['Deniz',121900,4]]};
+const STORE={tema:[{id:'t1',n:'Gece masası',d:'Koyu tema',own:1,p:['#0E1320','#D4AF37']},{id:'t2',n:'Su yeşili',d:'Açık tema',own:1,p:['#EAF6F3','#0B7A6E']},{id:'t3',n:'Lale',d:'Osmanlı lale motifli masa',pr:20000,p:['#3B0F1E','#E8A1B4']},{id:'t4',n:'Çini',d:'İznik mavisi',pr:30000,p:['#0F3C6E','#F2F6FA']}],
+ zar:[{id:'z1',n:'Klasik beyaz',own:1,c:'#FFFFFF',pc:'#1A1A1A'},{id:'z2',n:'Kırmızı akik',pr:8000,c:'#B3262E',pc:'#FFFFFF'},{id:'z3',n:'Altın zar',pr:15000,c:'#D4AF37',pc:'#3B2A06'},{id:'z4',n:'Fildişi',pr:10000,c:'#F3EAD3',pc:'#7A1F1F'}],
+ istaka:[{id:'i1',n:'Ceviz',own:1,c:'#6B3F22'},{id:'i2',n:'Açık meşe',pr:25000,c:'#C49158'},{id:'i3',n:'Sedef kakma',pr:50000,c:'#3A1D12',sedef:1},{id:'i4',n:'Karbon fiber',pr:100000,c:'#24262A'}],
+ deste:[{id:'d1',n:'Klasik',own:1,c:'#FFFFFF',b:'#1F5FC4'},{id:'d2',n:'Osmanlı motifli',pr:12000,c:'#FAF3E3',b:'#8A1F2B'},{id:'d3',n:'Gece mavisi',pr:9000,c:'#FFFFFF',b:'#16213E'},{id:'d4',n:'Altın kenar',pr:18000,c:'#FFFBEF',b:'#B8922F'}],
+ cip:[{id:'c1',n:'10.000 çip',tl:'₺29,99',amt:10000},{id:'c2',n:'50.000 çip',tl:'₺119,99',amt:50000,best:1},{id:'c3',n:'150.000 çip',tl:'₺299,99',amt:150000},{id:'c4',n:'500.000 çip',tl:'₺799,99',amt:500000}]};
+const STAB={tema:'Temalar',zar:'Zarlar',istaka:'Istakalar',deste:'Kart desteleri',cip:'Çip'};
+const MSG=['Salonlar hazırlanıyor…','Masalar kuruluyor…','Çipler sayılıyor…','Zarlar atılıyor…'];
+const S={s:'splash',th:'sys',user:null,guest:false,saved:false,chips:25400,lv:27,gift:true,notif:true,ov:null,game:'okey',lastSal:'kap',
+ auth:{tab:'mail',err:'',codeSent:false},room:{name:'',mode:0,bi:2,lock:false,pin:'',err:''},stab:'tema',lb:'g',lbg:'okey',pg:0,
+ set:{snd:true,vib:true,intro:false,lang:'tr'},buy:null,friendsInv:true,myRoom:null};
+const f=n=>n.toLocaleString('tr-TR');
+const isLt=()=>S.th=='lt'||(S.th=='sys'&&!matchMedia('(prefers-color-scheme: dark)').matches);
+const kizImg=()=>isLt()?IMG.kizG:IMG.kizA;
+const img=k=>k=='kizA'?kizImg():IMG[k];
+const isNew=()=>S.guest&&!S.saved;
+const t=(n,c,s=1)=>`<div class="tile" style="width:${28*s}px;height:${40*s}px;font-size:${16*s}px;color:${NC[c]}">${n}<span>${SY[c]}</span></div>`;
+const cd=(r,s,red,rot=0,ml=0)=>`<div class="pc" style="color:${red?'#C8262C':'#16181D'};transform:rotate(${rot}deg);margin-left:${ml}px">${r}<br>${s}</div>`;
+const ck=c=>`<span class="ck" style="background:${c}"></span>`;
+const PIPS={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const die=(n=5,s=44,c='#FFFFFF',pc='#1A1A1A')=>`<div class="die" style="width:${s}px;height:${s}px;padding:${Math.round(s*.16)}px;background:${c};border-radius:${Math.round(s*.23)}px">${Array.from({length:9},(_,i)=>PIPS[n].includes(i)?`<i style="width:${Math.round(s*.18)}px;height:${Math.round(s*.18)}px;background:${pc}"></i>`:'<span></span>').join('')}</div>`;
+const nick=()=>S.user||'Misafir';
+const av=(s=34,i=0)=>`<div class="av" style="width:${s}px;height:${s}px;font-size:${Math.round(s*.42)}px;background:${AVG[i]}">${nick()[0].toUpperCase()}</div>`;
+const bg=src=>`<div class="bgw"><div class="bgp" style="background-image:url('${src}')"></div></div><div class="veil"></div>`;
+// Logo: okey taşı, iskambil kartı ve zar iç içe; tek vektör ikon.
+const LOGO=(s=120)=>`<svg width="${s}" height="${s}" viewBox="0 0 120 120" role="img" aria-label="Salon logosu"><defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6DE8D"/><stop offset="1" stop-color="#C9A23A"/></linearGradient><linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDF7"/><stop offset="1" stop-color="#EDE3CB"/></linearGradient></defs>
+<rect x="6" y="6" width="108" height="108" rx="30" fill="#141B33" stroke="url(#lg1)" stroke-width="2.5"/>
+<g transform="rotate(14 74 56)"><rect x="56" y="24" width="36" height="52" rx="6" fill="#FFFFFF" stroke="#D9D2C2"/><text x="62" y="40" font-family="system-ui" font-size="13" font-weight="600" fill="#C8262C">A</text><path d="M79 56c-5-4-9-7-9-11a4.5 4.5 0 0 1 9-1.5a4.5 4.5 0 0 1 9 1.5c0 4-4 7-9 11z" fill="#C8262C"/></g>
+<g transform="rotate(-12 44 58)"><rect x="26" y="30" width="34" height="50" rx="6" fill="url(#lg2)" stroke="#D6C9AC"/><text x="43" y="58" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="600" fill="#1F5FC4">7</text><circle cx="43" cy="69" r="3" fill="#1F5FC4"/></g>
+<g transform="rotate(8 62 84)"><rect x="46" y="68" width="32" height="32" rx="8" fill="url(#lg1)" stroke="#9C7A22"/><circle cx="54" cy="76" r="2.8" fill="#2A1F05"/><circle cx="62" cy="84" r="2.8" fill="#2A1F05"/><circle cx="70" cy="92" r="2.8" fill="#2A1F05"/></g></svg>`;
+const tog=on=>`<div class="tg" style="background:${on?'var(--acc)':'var(--pn2)'}"><span style="left:${on?20:2}px"></span></div>`;
+function header(){return `<div style="display:flex;align-items:center;gap:10px;height:44px;flex:none">
+<div style="display:flex;align-items:center;gap:9px;cursor:pointer;padding:3px 14px 3px 3px;border-radius:24px" class="glass" data-go="profile">${av(36)}<div style="line-height:1.2"><div style="font-weight:500;font-size:14px">${nick()}</div><div style="display:flex;gap:5px;align-items:center"><span class="lvb">Sv. ${isNew()?1:S.lv}</span><span class="sb" style="font-size:11px">${isNew()?'Acemi':'Usta'}</span></div></div></div>
+<span style="flex:1"></span>
+<div class="glass" style="display:flex;align-items:center;gap:6px;height:38px;border-radius:19px;padding:0 6px 0 12px;cursor:pointer" data-act="wallet" aria-label="Cüzdan"><i class="ti ti-coin" style="color:var(--rw);font-size:18px" aria-hidden="true"></i><b style="font-weight:500;color:var(--rw)">${f(S.chips)}</b><span style="width:26px;height:26px;border-radius:50%;background:var(--acc);color:var(--onA);display:flex;align-items:center;justify-content:center"><i class="ti ti-plus" aria-hidden="true"></i></span></div>
+<div class="ib glass" data-act="notif" aria-label="Bildirimler"><i class="ti ti-bell" aria-hidden="true"></i>${S.notif?'<span class="dot"></span>':''}</div>
+<div class="ib glass" data-act="settings" aria-label="Ayarlar"><i class="ti ti-settings" aria-hidden="true"></i></div></div>`;}
+const NAV=[['home','home','Ana Sayfa'],['friends','users','Arkadaşlar'],['leader','trophy','Liderlik'],['store','building-store','Mağaza']];
+const nav=()=>`<div class="nav glass">${NAV.map(([k,i,l])=>`<div class="${S.s==k?'on':''}" data-go="${k}"><i class="ti ti-${i}" aria-hidden="true"></i>${l}</div>`).join('')}</div>`;
+const shell=(inner,photo)=>`${bg(photo)}<div class="scr" style="flex-direction:column;padding-bottom:62px;gap:10px">${header()}${inner}</div>${nav()}`;
+function gameCard(k){const g=GAMES[k];const pcs=k=='okey'?`${t(5,0,.9)}${t(6,0,.9)}${t(7,0,.9)}`:k=='tavla'?`${ck('#F4F1EA')}${ck('#9E1B24')}${die(4,30)}`:`<div style="display:flex">${cd('J','♣',0,-8)}${cd('A','♥',1,6,-16)}${cd('K','♠',0,14,-16)}</div>`;
+return `<div class="gcard" style="background-image:url('${img(g.img)}')" data-game="${k}"><div class="sh"></div><div class="pieces">${pcs}</div><div class="in"><b>${g.name}</b><div style="display:flex;gap:5px;flex-wrap:wrap">${g.tags.map(x=>`<span class="tag">${x}</span>`).join('')}</div><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;opacity:.85"><span style="color:#5BE38F">●</span> ${f(g.on)} online</span><span class="b gold" style="height:34px;font-size:13px">Oyna</span></div></div></div>`;}
+function preview(tab,it){if(tab=='tema')return `<div class="prev" style="background:${it.p[0]}"><span style="width:46%;height:26px;border-radius:7px;background:${it.p[1]};opacity:.9"></span></div>`;
+if(tab=='zar')return `<div class="prev" style="background:var(--pn2)">${die(5,36,it.c,it.pc)}${die(3,36,it.c,it.pc)}</div>`;
+if(tab=='istaka')return `<div class="prev" style="background:var(--pn2);flex-direction:column;gap:0"><div style="display:flex;gap:2px;background:${it.c};padding:5px 8px 3px;border-radius:7px 7px 0 0">${t(3,0,.55)}${t(4,0,.55)}${t(5,0,.55)}${t(9,1,.55)}</div><div style="width:112px;height:8px;background:${it.c};filter:brightness(1.25);border-radius:0 0 5px 5px;${it.sedef?'background-image:repeating-linear-gradient(90deg,#F3ECDD 0 3px,transparent 3px 8px)':''}"></div></div>`;
+if(tab=='deste')return `<div class="prev" style="background:var(--pn2)"><div class="pc" style="background:${it.c};color:#C8262C;transform:rotate(-8deg)">A<br>♥</div><div class="pc" style="background:repeating-linear-gradient(45deg,${it.b} 0 4px,${it.c} 4px 7px);border:3px solid ${it.c};transform:rotate(6deg);margin-left:-12px"></div></div>`;
+return `<div class="prev" style="background:var(--pn2);gap:4px"><i class="ti ti-coin" style="font-size:30px;color:var(--rw)" aria-hidden="true"></i><b style="font-weight:500;color:var(--rw)">${f(it.amt)}</b></div>`;}
+const SCR={
+splash:()=>`<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,var(--bg2),var(--bg) 70%)"></div><div class="scr" style="align-items:center;justify-content:center;flex-direction:column;gap:14px">
+<div class="logo-wrap lg-in">${LOGO(128)}</div><div class="nm-in" style="font-size:40px;font-weight:500;letter-spacing:1px">Salon</div></div>`,
+login:()=>`${bg(IMG.kap)}<div class="scr">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:8px;padding-right:20px">${LOGO(96)}
+<div style="font-size:38px;font-weight:500;letter-spacing:.5px;margin-top:4px">Salon</div><div style="font-size:18px;color:var(--sb)">Türkiye’nin Dijital Salonu</div>
+<div class="sb" style="display:flex;align-items:center;gap:6px;margin-top:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--ok)"></span>Şu an 9.195 oyuncu masada</div></div>
+<div class="glass" style="flex:1;border-radius:22px;padding:20px;display:flex;flex-direction:column;justify-content:center;gap:10px">
+<div class="b" data-act="login"><i class="ti ti-brand-google" style="font-size:20px" aria-hidden="true"></i>Google ile devam et</div>
+<div class="b" style="background:var(--apl);color:var(--aplT);border:none" data-act="login"><i class="ti ti-brand-apple" style="font-size:21px" aria-hidden="true"></i>Apple ile giriş yap</div>
+<div class="b" data-act="authform"><i class="ti ti-mail" style="font-size:19px" aria-hidden="true"></i>E-posta / Telefon ile giriş yap</div>
+<div style="height:1px;background:var(--bd);margin:4px 0"></div>
+<div class="b" style="background:none;border:1px dashed var(--bd);color:var(--acc)" data-act="guest"><i class="ti ti-user-question" aria-hidden="true"></i>Misafir olarak gir</div>
+<div class="sb" style="text-align:center;font-size:11px">Devam ederek Koşullar ve Gizlilik’i kabul edersin</div></div></div>`,
+home:()=>shell(`${isNew()?`<div class="glass" style="border-radius:14px;padding:7px 8px 7px 14px;display:flex;align-items:center;gap:10px;flex:none"><i class="ti ti-user-exclamation" style="color:var(--rw);font-size:20px" aria-hidden="true"></i><div style="flex:1"><b style="font-weight:500">${nick()} olarak oynuyorsun.</b> <span class="sb">Çiplerin ve seviyen kaybolmasın diye profilini kaydet.</span></div><div class="b gold" style="height:34px;font-size:13px" data-act="authform">Profilini kaydet</div></div>`:''}
+<div class="hs">${['okey','tavla','kart'].map(gameCard).join('')}</div>`,kizImg()),
+friends:()=>shell(`<div style="display:flex;gap:12px;flex:1;min-height:0">
+<div style="flex:1;display:flex;flex-direction:column;gap:7px;min-width:0"><div style="display:flex;align-items:center;gap:8px"><b style="font-size:16px;font-weight:500">Arkadaşlar</b><span class="sb">${FR.filter(x=>x.st!='off').length} çevrimiçi</span><span style="flex:1"></span><div class="ch" data-act="t:Kullanıcı adıyla arkadaş ekleme bir sonraki sürümde"><i class="ti ti-user-plus" aria-hidden="true"></i> Arkadaş ekle</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">${FR.map((x,i)=>{const dot=x.st=='off'?'#777':x.st=='lobby'?'var(--ok)':'var(--rw)';
+const btn=x.st=='lobby'?`<div class="ch on" data-act="invite:${i}" title="Masama çağır" aria-label="Masama çağır"><i class="ti ti-send" aria-hidden="true"></i> Çağır</div>`:x.st=='table'?`<div class="ch" data-act="joinfr:${i}" style="color:var(--acc)">${x.room.lock?'<i class="ti ti-lock" aria-hidden="true"></i> ':''}Masaya katıl</div>`:x.st=='ghost'?`<div class="ch" data-act="t:${x.n} kişisine davet isteği gönderildi">Davet iste</div>`:x.st=='tavla'?`<div class="ch" data-act="t:Tavla masası bir sonraki adımda">İzle</div>`:'';
+return `<div class="row glass" style="cursor:default;height:54px"><div style="position:relative"><div class="av" style="width:34px;height:34px;font-size:14px;background:${AVG[x.g]};border-color:transparent">${x.n[0]}</div><span style="position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;background:${dot};border:2px solid var(--bg)"></span></div><div style="flex:1;min-width:0;line-height:1.3"><div style="font-weight:500">${x.n}${x.st=='ghost'?' <i class="ti ti-ghost" style="color:var(--sb)" aria-hidden="true"></i>':''}</div><div class="sb" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${frLine(x)}</div></div>${btn}</div>`;}).join('')}</div></div>
+<div style="width:31%;display:flex;flex-direction:column;gap:7px"><b style="font-size:16px;font-weight:500">Davetler</b>${S.friendsInv?`<div class="glass" style="border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:9px;align-items:center"><div class="av" style="width:34px;height:34px;font-size:14px;background:${AVG[2]};border-color:transparent">A</div><div style="line-height:1.3"><b style="font-weight:500">Ayşe</b>: “Seni masama çağırıyorum”<br><span class="sb">“Akşam Kahvesi” · Okey · Katlamalı · 1.000 çip</span></div></div><div style="display:flex;gap:7px;align-items:center;background:var(--pn2);border-radius:10px;padding:7px 9px;font-size:11px"><i class="ti ti-key" style="color:var(--rw);font-size:16px" aria-hidden="true"></i><span style="flex:1">Gizli ve şifreli oda. Tek kullanımlık geçiş anahtarı ekli, şifre gerekmez.</span><span class="sb" style="font-size:11px">${keyLeft()}</span></div><div style="display:flex;gap:6px"><div class="b" style="flex:1;height:36px" data-act="decline">Reddet</div><div class="b gold" style="flex:1;height:36px" data-act="accept">Katıl</div></div></div>`:`<div class="sb glass" style="border-radius:14px;padding:12px">Bekleyen davet yok.</div>`}
+${S.myRoom?`<div class="glass" style="border-radius:14px;padding:10px;font-size:12px;line-height:1.4"><b style="font-weight:500">Masan:</b> ${esc(S.myRoom.name)}<br><span class="sb">${S.myRoom.ghost?'<i class="ti ti-ghost" aria-hidden="true"></i> Gizli':''}${S.myRoom.lock?' <i class="ti ti-lock" aria-hidden="true"></i> Şifreli':''}${!S.myRoom.ghost&&!S.myRoom.lock?'Herkese açık':''} · davetler bu masaya gider</span></div>`:''}</div></div>`,IMG.uzu),
+leader:()=>{const L=LB[S.lb];return shell(`<div style="display:flex;gap:12px;flex:1;min-height:0">
+<div style="width:38%;display:flex;flex-direction:column;gap:8px"><div class="seg">${[['g','Günlük'],['h','Haftalık']].map(([k,l])=>`<div class="${S.lb==k?'on':''}" data-act="lb:${k}">${l}</div>`).join('')}</div><div class="seg">${[['okey','Okey'],['tavla','Tavla'],['kart','Kart']].map(([k,l])=>`<div class="${S.lbg==k?'on':''}" data-act="lbg:${k}">${l}</div>`).join('')}</div>
+<div style="flex:1;display:flex;align-items:flex-end;gap:6px;min-height:0">${[1,0,2].map(i=>`<div class="pod glass" style="flex:1;height:${[100,80,66][i]}%"><div class="av" style="width:${i?30:38}px;height:${i?30:38}px;font-size:14px;background:${AVG[L[i][2]]};border-color:${['#E3B341','#C9CED8','#C98A4A'][i]}">${L[i][0][0]}</div><b style="font-weight:500;font-size:12px;white-space:nowrap">${L[i][0]}</b><span style="color:var(--rw);font-size:11px;font-weight:500">${f(L[i][1])}</span><span style="font-size:18px;font-weight:500;color:${['#E3B341','#C9CED8','#C98A4A'][i]}">${i+1}</span></div>`).join('')}</div></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">${L.slice(3).map((r,i)=>`<div class="row glass" style="cursor:default;height:36px"><b style="font-weight:500;width:22px;color:var(--sb)">${i+4}</b><div class="av" style="width:26px;height:26px;font-size:12px;background:${AVG[r[2]]};border-color:transparent">${r[0][0]}</div><span style="flex:1">${r[0]}</span><b style="font-weight:500;color:var(--rw)">${f(r[1])}</b></div>`).join('')}
+<div class="row" style="cursor:default;height:40px;border:1.5px solid var(--acc);background:var(--pn);margin-top:auto"><b style="font-weight:500;width:22px;color:var(--acc)">128</b>${av(26)}<span style="flex:1">${nick()} (sen)</span><b style="font-weight:500;color:var(--rw)">${f(S.lb=='g'?3400:21800)}</b></div>
+<div class="sb" style="text-align:center;font-size:11px">${S.lb=='g'?'Günlük sıralama gece 00:00’da sıfırlanır. İlk 3’e çip ödülü.':'Haftalık sıralama pazartesi sıfırlanır. İlk 10’a turnuva bileti.'}</div></div></div>`,IMG.pam);},
+store:()=>shell(`<div class="seg" style="flex:none">${Object.keys(STAB).map(k=>`<div class="${S.stab==k?'on':''}" data-act="stab:${k}">${STAB[k]}</div>`).join('')}</div>
+<div style="flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;min-height:0;align-content:start">${STORE[S.stab].map(it=>`<div class="item glass">${preview(S.stab,it)}<div style="display:flex;align-items:center;gap:6px"><b style="font-weight:500;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${it.n}</b>${it.best?'<span class="lvb">En çok</span>':''}</div>${it.d?`<div class="sb" style="font-size:11px;margin-top:-4px">${it.d}</div>`:''}
+${S.stab=='cip'?`<div class="b gold" style="height:34px;font-size:13px" data-act="iap:${it.id}">${it.tl}</div>`:it.own?`<div class="b" style="height:34px;font-size:13px;cursor:default;color:var(--acc);border-color:var(--acc)"><i class="ti ti-check" aria-hidden="true"></i>Sahipsin</div>`:`<div class="b gold" style="height:34px;font-size:13px" data-act="buy:${it.id}"><i class="ti ti-coin" aria-hidden="true"></i>${f(it.pr)}</div>`}</div>`).join('')}</div>`,IMG.olu),
+profile:()=>{const ST=[{m:412,w:58,p:'1.840',r:7},{m:236,w:61,p:'1.565',r:5},{m:98,w:49,p:'1.120',r:3}][S.pg],nw=isNew();return `${bg(kizImg())}<div class="scr">
+<div class="glass" style="width:30%;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;position:relative"><div class="ib" style="position:absolute;left:8px;top:8px" data-go="home" aria-label="Geri"><i class="ti ti-chevron-left" aria-hidden="true"></i></div>${av(72)}
+<div style="font-size:18px;font-weight:500;margin-top:4px">${nick()}</div><div style="display:flex;gap:6px;align-items:center"><span class="lvb">Sv. ${nw?1:S.lv}</span><span class="sb">${nw?'Acemi':'Usta'}</span></div>
+<div style="width:100%;margin-top:6px"><div style="height:6px;border-radius:3px;background:var(--pn2)"><div style="width:${nw?12:62}%;height:6px;border-radius:3px;background:var(--acc)"></div></div></div>
+${nw?`<div class="b gold" style="height:36px;width:100%;margin-top:6px;font-size:13px" data-act="authform">Profilini kaydet</div>`:''}</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;justify-content:center"><b style="font-size:17px;font-weight:500">Profil ve istatistikler</b>
+<div class="seg">${['Okey','Tavla','Kart'].map((g,i)=>`<div class="${S.pg==i?'on':''}" data-act="pg:${i}">${g}</div>`).join('')}</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${(nw?[[0,'Maç'],['%0','Kazanma'],[0,'Puan'],[0,'En uzun seri']]:[[ST.m,'Maç'],['%'+ST.w,'Kazanma'],[ST.p,'Puan'],[ST.r,'En uzun seri']]).map(([v,l])=>`<div class="glass" style="border-radius:14px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:500">${v}</div><div class="sb" style="font-size:11px">${l}</div></div>`).join('')}</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${[['award','Rozetler',nw?'0':'31'],['history','Maç geçmişi','']].map(([i,l,c])=>`<div class="row glass" data-act="t:${l} bir sonraki adımda"><i class="ti ti-${i}" style="color:var(--sb)" aria-hidden="true"></i>${l}<span class="sb" style="margin-left:auto">${c}</span><i class="ti ti-chevron-right" style="color:var(--sb)" aria-hidden="true"></i></div>`).join('')}</div></div></div>`},
+salon:()=>`${bg(IMG.pam)}<div class="scr" style="flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:10px"><div class="ib glass" data-go="home" aria-label="Geri"><i class="ti ti-chevron-left" aria-hidden="true"></i></div><b style="font-size:18px;font-weight:500">Okey · Salon seç</b><span class="sb">Bahis büyüdükçe manzara değişir</span><span style="flex:1"></span><div class="ch" style="color:var(--rw);font-weight:500"><i class="ti ti-coin" aria-hidden="true"></i> ${f(S.chips)}</div></div>
+<div style="flex:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;min-height:0">${SAL.map(s=>{const lock=S.chips<s.min;return `<div class="gcard" style="width:auto;background-image:url('${s.k=='kiz'?kizImg():IMG[s.k]}')" data-sal="${s.k}"><div class="sh"></div>${lock?`<span class="tag" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.55)"><i class="ti ti-lock" aria-hidden="true"></i> ${f(s.min)}</span>`:''}<div class="in"><b style="font-size:16px">${s.name}</b><span style="font-size:12px;opacity:.9">${f(s.bet)} çip bahis</span></div></div>`;}).join('')}</div></div>`,
+table:()=>{const q=new URLSearchParams({embed:1,salon:S.tSal,bet:S.tBet,chips:S.chips,th:isLt()?'lt':'dk'});if(S.tRoom){q.set('room',S.tRoom);q.set('mode',S.tMode);if(S.tLock)q.set('lock',1);if(S.tGhost)q.set('ghost',1);}return `<iframe class="table" title="Okey masası" src="index.html?${q}"></iframe>`}};
+const OV={
+auth:()=>{const a=S.auth;return `<div class="ov" data-close="1"><div class="dlg glass" style="width:46%"><div style="display:flex;align-items:center"><b style="font-size:17px;font-weight:500;flex:1">${S.guest?'Profilini kaydet':'Giriş yap'}</b><div class="ib" data-act="close" aria-label="Kapat"><i class="ti ti-x" aria-hidden="true"></i></div></div>
+<div class="seg"><div class="${a.tab=='mail'?'on':''}" data-act="atab:mail">E-posta</div><div class="${a.tab=='tel'?'on':''}" data-act="atab:tel">Telefon</div></div>
+${a.tab=='mail'?`<input class="f" id="am" type="email" placeholder="ornek@eposta.com" aria-label="E-posta"><input class="f" id="ap" type="password" placeholder="Şifre (en az 6 karakter)" aria-label="Şifre">`
+:`<input class="f" id="at" inputmode="tel" placeholder="5XX XXX XX XX" aria-label="Telefon numarası" value="${a.tel||''}">${a.codeSent?`<input class="f" id="ac" inputmode="numeric" maxlength="6" placeholder="SMS ile gelen 6 haneli kod" aria-label="Doğrulama kodu">`:''}`}
+<div class="err" id="aerr">${a.err}</div><div class="b gold" data-act="asubmit">${a.tab=='tel'&&!a.codeSent?'Kod gönder':'Devam et'}</div></div></div>`},
+notif:()=>`<div class="ov" style="background:transparent" data-close="1"><div class="drop glass">${[S.gift?['gift','Günlük ödülün hazır','+500 çip','claim']:null,['user-plus','Ayşe seni masaya davet etti','“Akşam Kahvesi” · Okey','gofriends'],['trophy','Haftalık turnuva','Bugün 20:00’de başlıyor','t:Turnuva kaydı bir sonraki sürümde']].filter(Boolean).map(([i,a,b,act])=>`<div class="ni" style="cursor:pointer" data-act="${act}"><span style="width:34px;height:34px;border-radius:10px;background:var(--pn2);display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:18px"><i class="ti ti-${i}" aria-hidden="true"></i></span><div style="flex:1;line-height:1.3"><div style="font-weight:500">${a}</div><div class="sb" style="font-size:11px">${b}</div></div>${act=='claim'?'<span class="ch on">Al</span>':''}</div>`).join('')}</div></div>`,
+settings:()=>{const s=S.set;return `<div class="ov" data-close="1"><div class="dlg glass" style="width:54%"><div style="display:flex;align-items:center"><b style="font-size:17px;font-weight:500;flex:1">Ayarlar</b><div class="ib" data-act="close" aria-label="Kapat"><i class="ti ti-x" aria-hidden="true"></i></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${[['snd','volume','Ses efektleri'],['vib','vibration','Titreşim'],['intro','music','Açılış sesi']].map(([k,i,l])=>`<div class="row" style="background:var(--pn2)" data-act="set:${k}"><i class="ti ti-${i}" style="color:var(--sb)" aria-hidden="true"></i>${l}<span style="margin-left:auto">${tog(s[k])}</span></div>`).join('')}<div class="row" style="background:var(--pn2);cursor:default"><i class="ti ti-language" style="color:var(--sb)" aria-hidden="true"></i>Dil<span style="margin-left:auto;padding:2px" class="seg"><div class="${s.lang=='tr'?'on':''}" data-act="lang:tr" style="padding:3px 9px">Türkçe</div><div data-act="lang:en" style="padding:3px 9px">English</div></span></div></div>
+<div class="sb">Tema</div><div class="seg">${[['sys','Sistem'],['lt','Açık · Su yeşili'],['dk','Koyu · Gece masası']].map(([k,l])=>`<div class="${S.th==k?'on':''}" data-act="th:${k}">${l}</div>`).join('')}</div>
+<div class="row" style="background:var(--pn2)" data-act="logout"><i class="ti ti-logout" style="color:var(--er)" aria-hidden="true"></i><span style="color:var(--er)">Çıkış yap</span></div></div></div>`},
+game:()=>{const g=GAMES[S.game],qs=bestSalon();return `<div class="ov" data-close="1"><div class="sheet glass"><div class="grab"></div><div style="display:flex;align-items:center;gap:8px"><b style="font-size:18px;font-weight:500;flex:1">${g.name}</b>${g.tags.map(x=>`<span class="ch" style="cursor:default">${x}</span>`).join('')}</div>
+<div style="display:flex;gap:12px"><div class="opt" style="background:var(--acc);color:var(--onA)" data-act="quick"><i class="ti ti-bolt" style="color:var(--onA)" aria-hidden="true"></i><b>Hemen başla</b><span style="font-size:12px;opacity:.85">${S.game=='okey'?`Sana uygun masaya otur · ${qs.name} · ${f(qs.bet)} çip`:'Uygun bir rakip bulunur, maç hemen başlar'}</span></div>
+<div class="opt glass" data-act="roomform"><i class="ti ti-lock" aria-hidden="true"></i><b>Özel oda kur</b><span class="sb">Masana isim ver, şifre koy, arkadaşlarını çağır</span></div></div>
+${S.game=='okey'?`<div style="display:flex;gap:8px"><div class="ch" data-act="gosalon"><i class="ti ti-map-pin" aria-hidden="true"></i> Salon seç</div><div class="ch" data-act="gofriends"><i class="ti ti-users" aria-hidden="true"></i> Arkadaşının masasına katıl</div></div>`:''}</div></div>`},
+room:()=>{const r=S.room,g=GAMES[S.game];return `<div class="ov" data-close="1"><div class="sheet glass" style="width:74%"><div class="grab"></div><div style="display:flex;align-items:center"><b style="font-size:18px;font-weight:500;flex:1">Özel oda kur · ${g.short}</b><div class="ib" data-act="close" aria-label="Kapat"><i class="ti ti-x" aria-hidden="true"></i></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 14px">
+<div style="display:flex;flex-direction:column;gap:5px"><span class="sb">1 · Oda adı</span><input class="f" id="rn" maxlength="24" placeholder="Akşam Kahvesi" value="${r.name.replace(/"/g,'&quot;')}" aria-label="Oda adı"></div>
+<div style="display:flex;flex-direction:column;gap:5px"><span class="sb">2 · Oyun modu</span><div class="seg">${g.modes.map((m,i)=>`<div class="${r.mode==i?'on':''}" data-act="rmode:${i}">${m}</div>`).join('')}</div></div>
+<div style="display:flex;flex-direction:column;gap:5px"><span class="sb">3 · Bahis (giriş ücreti)</span><div class="row" style="background:var(--pn);border:1px solid var(--bd);cursor:default"><i class="ti ti-minus" style="cursor:pointer;color:var(--acc);font-size:18px" data-act="rbet:-1" aria-label="Azalt"></i><b style="font-weight:500;flex:1;text-align:center">${f(BETS[r.bi])} çip</b><i class="ti ti-plus" style="cursor:pointer;color:var(--acc);font-size:18px" data-act="rbet:1" aria-label="Artır"></i></div><span class="sb" style="font-size:11px">Kazanana ${f(BETS[r.bi]*3)} çip</span></div>
+<div style="display:flex;flex-direction:column;gap:5px"><span class="sb">4 · Güvenlik</span><div style="display:flex;gap:8px"><div class="row" style="background:var(--pn);border:1px solid var(--bd);flex:1" data-act="rlock"><span style="width:22px;height:22px;border-radius:6px;border:2px solid ${r.lock?'var(--acc)':'var(--sb)'};background:${r.lock?'var(--acc)':'transparent'};display:flex;align-items:center;justify-content:center;color:var(--onA);flex:none">${r.lock?'<i class="ti ti-check" aria-hidden="true"></i>':''}</span><i class="ti ti-lock" aria-hidden="true"></i>Şifreli oda</div>
+${r.lock?`<input class="f" id="rp" inputmode="numeric" maxlength="4" placeholder="4 haneli şifre" value="${r.pin}" aria-label="Oda şifresi" style="letter-spacing:5px;text-align:center;width:46%">`:''}</div>${r.lock?'<span class="sb" style="font-size:11px">Sadece şifreyi bilenler masaya oturabilir</span>':''}
+<div class="row" style="background:var(--pn);border:1px solid var(--bd)" data-act="rghost"><span style="width:22px;height:22px;border-radius:6px;border:2px solid ${r.ghost?'var(--acc)':'var(--sb)'};background:${r.ghost?'var(--acc)':'transparent'};display:flex;align-items:center;justify-content:center;color:var(--onA);flex:none">${r.ghost?'<i class="ti ti-check" aria-hidden="true"></i>':''}</span><i class="ti ti-ghost" aria-hidden="true"></i>Gizli oda <span class="sb" style="font-size:11px">· listelerde görünmez</span></div></div></div>
+<div class="err" id="rerr">${r.err}</div><div class="b gold" data-act="rcreate"><i class="ti ti-armchair" aria-hidden="true"></i>Odayı oluştur ve masaya otur</div></div></div>`},
+buy:()=>{const it=S.buy,tab=Object.keys(STORE).find(k=>STORE[k].includes(it));return `<div class="ov" data-close="1"><div class="dlg glass" style="width:40%;align-items:stretch">${preview(tab,it)}<div style="text-align:center"><b style="font-size:16px;font-weight:500">${it.n}</b><div class="sb" style="margin-top:3px">${S.chips>=it.pr?`${f(it.pr)} çip harcanacak. Kalan bakiyen ${f(S.chips-it.pr)} olur.`:`Çipin yetmiyor. ${f(it.pr-S.chips)} çip eksik.`}</div></div><div style="display:flex;gap:8px"><div class="b" style="flex:1" data-act="close">Vazgeç</div>${S.chips>=it.pr?'<div class="b gold" style="flex:1" data-act="confirmbuy">Satın al</div>':'<div class="b gold" style="flex:1" data-act="stab:cip">Çip al</div>'}</div></div></div>`},
+invite:()=>{const x=FR[S.invTo],R=S.myRoom,key=S.invKey,sec=R&&(R.lock||R.ghost);return `<div class="ov" data-close="1"><div class="dlg glass" style="width:46%"><div style="display:flex;align-items:center;gap:10px"><div class="av" style="width:40px;height:40px;font-size:16px;background:${AVG[x.g]};border-color:transparent">${x.n[0]}</div><div style="flex:1"><b style="font-size:16px;font-weight:500">Davet gönderildi</b><div class="sb">${x.n} bildirim aldı: “Seni masama çağırıyorum”</div></div><i class="ti ti-circle-check" style="font-size:26px;color:var(--ok)" aria-hidden="true"></i></div>
+<div style="background:var(--pn2);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:5px"><div style="display:flex;gap:6px;align-items:center"><i class="ti ti-armchair" aria-hidden="true"></i><b style="font-weight:500">${R?esc(R.name):'Okey masan'}</b><span class="sb">${R?(R.ghost?'· gizli':'')+(R.lock?' · şifreli':''):'· hızlı masa'}</span></div>
+${sec?`<div style="display:flex;gap:6px;align-items:center;font-size:12px"><i class="ti ti-key" style="color:var(--rw)" aria-hidden="true"></i>Tek kullanımlık geçiş anahtarı eklendi · 10 dakika geçerli</div><code style="font-size:11px;color:var(--sb);word-break:break-all">salon.app/masa/${encodeURIComponent((R.name||'').toLowerCase().replace(/\s+/g,'-'))}?anahtar=${key}</code><div class="sb" style="font-size:11px">${x.n} bu bağlantıyla şifre girmeden oturur. Bağlantı bir kez kullanılınca geçersiz olur.</div>`:`<div class="sb" style="font-size:12px">Masan herkese açık, ek anahtar gerekmiyor.</div>`}</div>
+<div class="b gold" data-act="close">Tamam</div></div></div>`},
+pin:()=>{const x=FR[S.pinFor];return `<div class="ov" data-close="1"><div class="dlg glass" style="width:40%"><div style="display:flex;align-items:center"><b style="font-size:16px;font-weight:500;flex:1"><i class="ti ti-lock" aria-hidden="true"></i> ${esc(x.room.name)}</b><div class="ib" data-act="close" aria-label="Kapat"><i class="ti ti-x" aria-hidden="true"></i></div></div><div class="sb">Bu masa şifreli. ${x.n} sana şifreyi söylediyse gir, ya da tek dokunuşla davet iste.</div>
+<input class="f" id="jp" inputmode="numeric" maxlength="4" placeholder="4 haneli şifre" aria-label="Masa şifresi" style="letter-spacing:6px;text-align:center"><div class="err" id="jerr"></div>
+<div style="display:flex;gap:8px"><div class="b" style="flex:1" data-act="askinv">Davet iste</div><div class="b gold" style="flex:1" data-act="pinjoin">Masaya otur</div></div></div></div>`},
+loading:()=>`<div class="ov\" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:var(--veil);flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:40"><div style="display:flex;gap:14px;align-items:center"><div class="roll">${die(5)}</div><div class="shuf" style="display:flex;gap:3px">${t(1,0,.9)}${t(13,1,.9)}${t(7,2,.9)}</div><div class="roll2">${die(3)}</div></div><div id="lmsg" style="font-size:15px;font-weight:500">${MSG[0]}</div></div>`};
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const keyT0=Date.now();const keyLeft=()=>{const r=Math.max(0,600-Math.floor((Date.now()-keyT0)/1000));return `${Math.floor(r/60)}:${String(r%60).padStart(2,'0')}`;};
+const mkKey=()=>Array.from({length:6},()=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*31)]).join('');
+function bestSalon(){let b=SAL[0];SAL.forEach(s=>{if(S.chips>=s.min)b=s;});return b;}
+const app=document.getElementById('app');
+let tm=[];const later=(fn,ms)=>tm.push(setTimeout(fn,ms));
+function toast(x){const e=app.querySelector('.tst');if(!e)return;e.textContent=x;e.style.opacity=1;clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.opacity=0,1900);}
+function go(s){tm.forEach(clearTimeout);tm=[];S.s=s;S.ov=null;render();}
+function openOv(o){S.ov=o;render();}
+function openTable(k,bet,room){S.tSal=k;S.tBet=bet;S.lastSal=k;S.tRoom=room&&room.name;S.tMode=room&&room.mode;S.tLock=room&&room.lock;S.tGhost=room&&room.ghost;go('table');}
+// İsteğe bağlı açılış sesi: dosya gerekmeden kısa bir taş karıştırma sesi üretir.
+let actx;function shuffleSound(){if(!S.set.intro)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<7;i++){const len=.05,buf=actx.createBuffer(1,Math.floor(actx.sampleRate*len),actx.sampleRate),d=buf.getChannelData(0);for(let j=0;j<d.length;j++)d[j]=(Math.random()*2-1)*Math.pow(1-j/d.length,3);const s=actx.createBufferSource(),g=actx.createGain(),fl=actx.createBiquadFilter();fl.type='bandpass';fl.frequency.value=2200+Math.random()*1200;g.gain.value=.25;s.buffer=buf;s.connect(fl);fl.connect(g);g.connect(actx.destination);s.start(actx.currentTime+i*.09+Math.random()*.03);}}catch(e){}}
+function startLoading(){S.ov='loading';render();let i=0;const iv=setInterval(()=>{i++;const e=document.getElementById('lmsg');if(e)e.textContent=MSG[i%MSG.length];},500);later(()=>{clearInterval(iv);go('home');},RM?700:1700);}
+let splashTimer=null;
+function render(){app.classList.toggle('lt',isLt());app.innerHTML=SCR[S.s]()+(S.ov?OV[S.ov]():'')+'<div class="tst"></div>';
+if(S.s=='splash'&&!splashTimer){shuffleSound();splashTimer=setTimeout(()=>go('login'),RM?800:1600);}}
+function submitAuth(){const a=S.auth;const err=m=>{a.err=m;const e=document.getElementById('aerr');if(e)e.textContent=m;};
+if(a.tab=='mail'){const m=document.getElementById('am').value.trim(),p=document.getElementById('ap').value;if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m))return err('Geçerli bir e-posta adresi gir');if(p.length<6)return err('Şifre en az 6 karakter olmalı');return finishAuth(m.split('@')[0]);}
+const tel=document.getElementById('at').value.replace(/\D/g,'').replace(/^0/,'');if(!/^5\d{9}$/.test(tel))return err('Numarayı 5XX XXX XX XX biçiminde gir');
+if(!a.codeSent){a.codeSent=true;a.tel=document.getElementById('at').value;a.err='';render();return toast('Doğrulama kodu gönderildi (demo: herhangi 6 rakam)');}
+const c=document.getElementById('ac').value.trim();if(!/^\d{6}$/.test(c))return err('6 haneli kodu gir');finishAuth('Oyuncu_'+tel.slice(-4));}
+function finishAuth(name){const wasGuest=S.guest;S.auth={tab:'mail',err:'',codeSent:false};if(wasGuest){S.saved=true;S.lv=1;S.ov=null;render();return toast('Profilin kaydedildi. İlerlemen artık güvende');}S.user=name;S.guest=false;S.ov=null;startLoading();}
+function keepRoomInputs(){const n=document.getElementById('rn'),p=document.getElementById('rp');if(n)S.room.name=n.value;if(p)S.room.pin=p.value.replace(/\D/g,'');}
+app.addEventListener('click',e=>{
+const ovEl=e.target.closest('[data-close]');if(ovEl&&e.target===ovEl&&S.ov!='loading'){S.ov=null;return render();}
+const g=e.target.closest('[data-go]');if(g)return go(g.dataset.go);
+const gm=e.target.closest('[data-game]');if(gm){S.game=gm.dataset.game;return openOv('game');}
+const sl=e.target.closest('[data-sal]');if(sl){const s=SAL.find(x=>x.k==sl.dataset.sal);if(S.chips<s.min)return toast(`${s.name} salonu için en az ${f(s.min)} çip gerekiyor`);return openTable(s.k,s.bet);}
+const a=e.target.closest('[data-act]');if(!a)return;const[k,v]=a.dataset.act.split(/:(.*)/);
+switch(k){
+case't':return toast(v);
+case'close':S.ov=null;return render();
+case'login':S.user='mehmet';S.guest=false;S.lv=27;return startLoading();
+case'guest':S.user='Oyuncu_'+(1000+Math.floor(Math.random()*9000));S.guest=true;S.saved=false;return startLoading();
+case'authform':S.auth={tab:'mail',err:'',codeSent:false};return openOv('auth');
+case'atab':S.auth.tab=v;S.auth.err='';S.auth.codeSent=false;return render();
+case'asubmit':return submitAuth();
+case'wallet':S.stab='cip';return go('store');
+case'notif':S.notif=false;return openOv('notif');
+case'settings':return openOv('settings');
+case'set':S.set[v]=!S.set[v];if(v=='intro'&&S.set.intro)shuffleSound();return render();
+case'lang':if(v=='en')return toast('İngilizce bir sonraki sürümde');return;
+case'th':S.th=v;return render();
+case'logout':S.user=null;S.guest=false;S.saved=false;return go('login');
+case'claim':S.gift=false;S.chips+=500;S.ov=null;render();return toast('Günlük ödül: +500 çip');
+case'gofriends':return go('friends');
+case'gosalon':return go('salon');
+case'quick':if(S.game!='okey'){S.ov=null;render();return toast(`${GAMES[S.game].short} masası bir sonraki adımda hazırlanacak`);}{const s=bestSalon();return openTable(s.k,s.bet);}
+case'roomform':S.room={name:'',mode:0,bi:2,lock:false,ghost:false,pin:'',err:''};return openOv('room');
+case'rmode':keepRoomInputs();S.room.mode=+v;return render();
+case'rbet':keepRoomInputs();S.room.bi=Math.min(BETS.length-1,Math.max(0,S.room.bi+ +v));return render();
+case'rghost':keepRoomInputs();S.room.ghost=!S.room.ghost;return render();
+case'rlock':keepRoomInputs();S.room.lock=!S.room.lock;S.room.err='';return render();
+case'rcreate':{keepRoomInputs();const r=S.room,em=m=>{r.err=m;document.getElementById('rerr').textContent=m;};if(!r.name.trim())return em('Odana bir isim ver');if(r.lock&&!/^\d{4}$/.test(r.pin))return em('Şifre 4 haneli bir sayı olmalı');if(S.chips<BETS[r.bi])return em('Bu bahis için çipin yetmiyor');
+if(S.game!='okey'){S.ov=null;render();return toast(`“${r.name.trim()}” kuruldu. ${GAMES[S.game].short} masası bir sonraki adımda`);}
+S.myRoom={name:r.name.trim(),lock:r.lock,ghost:r.ghost};return openTable(SAL[Math.min(4,r.bi)].k,BETS[r.bi],{name:r.name.trim(),mode:GAMES.okey.modes[r.mode],lock:r.lock,ghost:r.ghost});}
+case'invite':S.invTo=+v;S.invKey=mkKey();FR[+v].st='lobby';return openOv('invite');
+case'joinfr':{const x=FR[+v];if(x.room.lock){S.pinFor=+v;return openOv('pin');}return openTable(x.room.sal,x.room.bet,{name:x.room.name,mode:x.room.mode,lock:false});}
+case'pinjoin':{const x=FR[S.pinFor],pv=(document.getElementById('jp').value||'').trim();if(!/^\d{4}$/.test(pv)){document.getElementById('jerr').textContent='Şifre 4 haneli bir sayı olmalı';return;}return openTable(x.room.sal,x.room.bet,{name:x.room.name,mode:x.room.mode,lock:true});}
+case'askinv':{const x=FR[S.pinFor];S.ov=null;render();return toast(`${x.n} kişisine davet isteği gönderildi`);}
+case'accept':S.friendsInv=false;toast('Geçiş anahtarı doğrulandı');return openTable('kiz',1000,{name:'Akşam Kahvesi',mode:'Katlamalı',lock:true,ghost:true});
+case'decline':S.friendsInv=false;render();return toast('Davet reddedildi');
+case'lb':S.lb=v;return render();
+case'lbg':S.lbg=v;return render();
+case'stab':S.stab=v;S.ov=null;if(S.s!='store')return go('store');return render();
+case'buy':S.buy=Object.values(STORE).flat().find(x=>x.id==v);return openOv('buy');
+case'confirmbuy':{const it=S.buy;S.chips-=it.pr;it.own=1;S.ov=null;render();return toast(`${it.n} artık senin`);}
+case'iap':{const it=STORE.cip.find(x=>x.id==v);S.chips+=it.amt;render();return toast(`Demo: ${it.n} eklendi. Gerçek ödeme App Store / Google Play üzerinden alınır`);}
+case'pg':S.pg=+v;return render();}});
+app.addEventListener('input',e=>{if(e.target.id=='jp'){e.target.value=e.target.value.replace(/\D/g,'');const je=document.getElementById('jerr');if(je)je.textContent='';}if(e.target.id=='rp')e.target.value=e.target.value.replace(/\D/g,'');const er=document.getElementById(e.target.id[0]=='r'?'rerr':'aerr');if(er)er.textContent='';});
+app.addEventListener('keydown',e=>{if(e.key=='Enter'&&S.ov=='auth')submitAuth();});
+window.addEventListener('message',e=>{if(e.data&&e.data.type=='okey-exit'){S.chips=e.data.chips;go('home');toast('Masadan kalktın');}});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.th=='sys'&&S.s!='table')render();});
+render();
+</script>
+</body>
+</html>
