@@ -47,8 +47,6 @@ var NEXT_HAND_MS = 7000; // katlamalıda hızlı masada sonraki el bu kadar sonr
 var KAT_START = 20;
 var MODES = ['duz', 'katlamali', '101'];
 var TURN_MS_101 = 35000; // 101'de el açmak zaman alır
-var WIN_XP = 60;
-var PLAY_XP = 20;
 
 var BOT_NAMES = ['Kahveci Rıza', 'Hacer Abla', 'Tavlacı Nuri', 'Sinan Usta', 'Melek Hanım', 'Ziya Bey', 'Leyla', 'Cemil Dayı'];
 
@@ -438,7 +436,7 @@ function payGame(state, nk, logger, winners, result) {
     var h = state.seats[k];
     if (h.bot) continue;
     try {
-      addXp(nk, h.userId, winners.indexOf(k) >= 0 ? WIN_XP : PLAY_XP);
+      recordGame(nk, h.userId, winners.indexOf(k) >= 0);
     } catch (e) {
       logger.warn('XP yazılamadı: %s', e);
     }
@@ -500,7 +498,7 @@ function settleDuz(state, nk, logger, now, result) {
     var h = state.seats[k];
     if (h.bot) continue;
     try {
-      addXp(nk, h.userId, result.winner === k ? WIN_XP : PLAY_XP);
+      recordGame(nk, h.userId, result.winner === k);
     } catch (e) {
       logger.warn('XP yazılamadı: %s', e);
     }

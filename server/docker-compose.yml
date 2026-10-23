@@ -1,7 +1,9 @@
 # Yerel geliştirme için Nakama + PostgreSQL.
 # Çalıştırma:  docker compose up
 # Nakama konsolu: http://127.0.0.1:7351  (kullanıcı: admin, şifre: password)
-# Bu ayarlar sadece geliştirme içindir; yayında server_key ve konsol şifresi değiştirilmeli.
+# Bu ayarlar sadece geliştirme içindir; yayında server_key, http_key ve konsol şifresi değiştirilmeli.
+# Şifre sıfırlama e-postası: yayında komuta şunlar eklenir (yoksa kod sunucu günlüğüne yazılır):
+#   --runtime.env RESET_MAIL_API_KEY=<resend.com anahtarı> --runtime.env "RESET_MAIL_FROM=Salon <kod@alanadi>"
 services:
   postgres:
     image: postgres:16-alpine

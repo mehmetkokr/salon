@@ -37,6 +37,16 @@ class TestGateway implements AuthGateway {
   Future<void> signOut() async {}
 
   @override
+  Future<void> requestPasswordReset(String email) async => calls.add('resetRequest $email');
+
+  @override
+  Future<SignedInUser> resetPassword(String email, String code, String newPassword) async {
+    calls.add('reset $email $code');
+    if (failWith != null) throw failWith!;
+    return const SignedInUser(userId: 'u7', username: 'Kahveci', isGuest: false, isNewAccount: false);
+  }
+
+  @override
   SocketStatus get socketStatus => SocketStatus.connected;
 
   @override
@@ -143,6 +153,38 @@ void main() {
     final user = container.read(authControllerProvider).value!;
     expect((user.username, user.isGuest), ('TavlaciAyse', false));
     expect(find.textContaining('Profilin kaydedildi'), findsOneWidget);
+  });
+
+  testWidgets('şifremi unuttum: kod gelir, yeni şifreyle giriş yapılır', (tester) async {
+    final (gateway, container) = await pump(tester, EmailSheetMode.signIn);
+    await tester.enterText(find.widgetWithText(TextField, 'E-posta'), 'ali@ornek.com');
+    await tester.tap(find.text('Şifremi unuttum'));
+    await tester.pumpAndSettle();
+    expect(find.text('Şifreni yenile'), findsOneWidget);
+    await tester.tap(find.text('Kod gönder'));
+    await tester.pumpAndSettle();
+    expect(gateway.calls, ['resetRequest ali@ornek.com']);
+    expect(find.textContaining('adresine bir kod gönderdik'), findsOneWidget);
+    expect(button('Şifreyi değiştir').enabled(tester), isFalse);
+    await tester.enterText(find.widgetWithText(TextField, 'Kod'), '12a345 6');
+    await tester.enterText(find.widgetWithText(TextField, 'Yeni şifre'), 'yeni-sifre');
+    await tester.pump();
+    expect(find.text('123456'), findsOneWidget, reason: 'sadece rakam');
+    gateway.failWith = const AuthFailure('Kod yanlış ya da süresi dolmuş. Yeni kod isteyebilirsin');
+    await tester.tap(find.text('Şifreyi değiştir'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Kod yanlış'), findsOneWidget);
+    gateway.failWith = null;
+    await tester.tap(find.text('Şifreyi değiştir'));
+    await tester.pumpAndSettle();
+    expect(gateway.calls.last, 'reset ali@ornek.com 123456');
+    expect(container.read(authControllerProvider).value?.username, 'Kahveci');
+    expect(find.text('Şifren değişti, giriş yaptın.'), findsOneWidget);
+  });
+
+  test('Sunucunun SALON: mesajı olduğu gibi gösterilir', () {
+    expect(AuthFailure.from(Exception('code: 13, message: Error: SALON:Kod yanlış ya da süresi dolmuş at x')).message,
+        'Kod yanlış ya da süresi dolmuş');
   });
 }
 

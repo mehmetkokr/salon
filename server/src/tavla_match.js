@@ -285,7 +285,7 @@ function tFinishGame(state, nk, logger, now, res) {
     var h = state.seats[k];
     if (h.bot) continue;
     try {
-      addXp(nk, h.userId, k === res.winner ? WIN_XP : PLAY_XP);
+      recordGame(nk, h.userId, k === res.winner);
     } catch (e) {
       logger.warn('XP yazılamadı: %s', e);
     }

@@ -85,7 +85,10 @@ test('oyun sonuna kadar oynanır; çipler tutarlı, XP yazılır, masa kapanır'
       assert.ok(t.M.winningKind(r.hand, t.state.okey));
       assert.equal(t.wallets.u1, r.winner === 0 ? 10000 : 9500);
     }
-    assert.ok(t.storage['u1progress'].xp >= 20);
+    const prog = t.storage['u1progress'];
+    assert.ok(prog.xp >= 20);
+    assert.equal(prog.played, 1, 'oynanan oyun karneye yazılır');
+    assert.equal(prog.won || 0, r.reason === 'win' && r.winner === 0 ? 1 : 0);
     t.advance(12000);
     assert.equal(t.loop(), null, 'sonuçtan sonra masa kapanır');
   }

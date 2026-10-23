@@ -34,6 +34,22 @@ class AuthController extends AsyncNotifier<SignedInUser?> {
   Future<String?> linkEmail(String email, String password, {String? username}) =>
       _attempt(() => ref.read(authGatewayProvider).linkEmail(email, password, username: username));
 
+  /// Şifre sıfırlama kodu ister. Hata olursa metnini döner.
+  Future<String?> requestPasswordReset(String email) async {
+    try {
+      await ref.read(authGatewayProvider).requestPasswordReset(email);
+      return null;
+    } on AuthFailure catch (e) {
+      return e.message;
+    } catch (_) {
+      return 'Sunucuya bağlanılamadı. İnternet bağlantını kontrol edip tekrar dene.';
+    }
+  }
+
+  /// Kodla yeni şifre belirler ve giriş yapar.
+  Future<String?> resetPassword(String email, String code, String newPassword) =>
+      _attempt(() => ref.read(authGatewayProvider).resetPassword(email, code, newPassword));
+
   Future<String?> _attempt(Future<SignedInUser> Function() run) async {
     try {
       final user = await run();

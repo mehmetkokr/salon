@@ -58,6 +58,13 @@ abstract interface class AuthGateway {
   /// [username] verilirse oyuncu adı da değişir.
   Future<SignedInUser> linkEmail(String email, String password, {String? username});
 
+  /// Şifre sıfırlama kodunu e-postaya gönderir. E-posta kayıtlı olmasa da
+  /// başarılı döner (kimin kayıtlı olduğu dışarıdan anlaşılmasın).
+  Future<void> requestPasswordReset(String email);
+
+  /// Kod doğruysa şifreyi değiştirir ve yeni şifreyle giriş yapar.
+  Future<SignedInUser> resetPassword(String email, String code, String newPassword);
+
   Future<void> signOut();
 
   SocketStatus get socketStatus;
@@ -89,6 +96,8 @@ class AuthFailure implements Exception {
 
   /// Nakama hata metnini oyuncunun anlayacağı cümleye çevirir.
   static AuthFailure from(Object error) {
+    final salon = TableError.from(error);
+    if (salon != null) return AuthFailure(salon.message);
     final t = error.toString().toLowerCase();
     if (t.contains('username') && (t.contains('in use') || t.contains('exists'))) {
       return const AuthFailure('Bu oyuncu adı alınmış, başka bir ad dene.');
@@ -244,6 +253,33 @@ class NakamaService implements AuthGateway, ProfileGateway, TableGateway {
       throw AuthFailure.from(error);
     }
     return _completeSignIn(session, isGuest: false);
+  }
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    try {
+      await client.rpcWithHttpKey(
+        httpKey: _config.httpKey,
+        id: 'password_reset_request',
+        payload: jsonEncode({'email': email.trim()}),
+      );
+    } catch (error) {
+      throw AuthFailure.from(error);
+    }
+  }
+
+  @override
+  Future<SignedInUser> resetPassword(String email, String code, String newPassword) async {
+    try {
+      await client.rpcWithHttpKey(
+        httpKey: _config.httpKey,
+        id: 'password_reset_confirm',
+        payload: jsonEncode({'email': email.trim(), 'code': code.trim(), 'password': newPassword}),
+      );
+    } catch (error) {
+      throw AuthFailure.from(error);
+    }
+    return signInWithEmail(email, newPassword);
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/design/tokens.dart';
 import '../../../core/design/widgets/salon_button.dart';
 import '../application/auth_controller.dart';
+import 'password_reset_panel.dart';
 
 enum EmailSheetMode {
   /// Giriş ekranından: var olan hesaba gir ya da yeni hesap aç.
@@ -40,6 +41,7 @@ class _EmailAuthSheetState extends ConsumerState<EmailAuthSheet> {
   late final TextEditingController _name = TextEditingController(text: widget.currentName ?? '');
   bool _hidden = true;
   bool _busy = false;
+  bool _resetting = false;
   String? _error;
 
   bool get _saving => widget.mode == EmailSheetMode.saveGuest;
@@ -94,6 +96,9 @@ class _EmailAuthSheetState extends ConsumerState<EmailAuthSheet> {
 
   @override
   Widget build(BuildContext context) {
+    if (_resetting) {
+      return PasswordResetPanel(initialEmail: _email.text, onBack: () => setState(() => _resetting = false));
+    }
     final c = context.salon;
     final note = _error ?? _hint;
     final fields = [
@@ -150,7 +155,15 @@ class _EmailAuthSheetState extends ConsumerState<EmailAuthSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(_saving ? 'Profilini kaydet' : 'E-postayla giriş', style: context.text.titleLarge),
+          Row(children: [
+            Expanded(child: Text(_saving ? 'Profilini kaydet' : 'E-postayla giriş', style: context.text.titleLarge)),
+            if (!_saving)
+              TextButton(
+                style: TextButton.styleFrom(minimumSize: const Size(kMinTap, kMinTap)),
+                onPressed: _busy ? null : () => setState(() => _resetting = true),
+                child: const Text('Şifremi unuttum'),
+              ),
+          ]),
           const SizedBox(height: Space.xs),
           Text(
             _saving

@@ -11,6 +11,8 @@
 
 var WELCOME_CHIPS = 10000;
 var DAILY_CHIPS = 500;
+var WIN_XP = 60; // oyun sonunda kazanana
+var PLAY_XP = 20; // oynayan herkese
 var TR_OFFSET_MS = 3 * 60 * 60 * 1000; // Türkiye: UTC+3, yaz saati yok
 
 var PROGRESS = { collection: 'profile', key: 'progress' };
@@ -73,6 +75,8 @@ function profileOf(nk, userId) {
     level: p.level,
     xp: p.xp,
     xpNeed: xpNeed(p.level),
+    played: p.played || 0,
+    won: p.won || 0,
     daily: dailyState(nk, userId, now),
   };
 }
@@ -109,7 +113,23 @@ function rpcDailyReward(ctx, logger, nk, payload) {
 
 /** Oyun sonunda XP ekler; gerekirse seviye atlatır. Yeni ilerlemeyi döner. */
 function addXp(nk, userId, amount) {
+  return addProgress(nk, userId, amount, null);
+}
+
+/**
+ * Bitmiş bir oyunu oyuncunun karnesine yazar: oynanan ve kazanılan sayısı
+ * (profildeki Maç / Kazanma) ve XP, tek kayıtta.
+ */
+function recordGame(nk, userId, won) {
+  return addProgress(nk, userId, won ? WIN_XP : PLAY_XP, won);
+}
+
+function addProgress(nk, userId, amount, won) {
   var p = progressOf(nk, userId);
+  if (won !== null) {
+    p.played = (p.played || 0) + 1;
+    if (won) p.won = (p.won || 0) + 1;
+  }
   p.xp += amount;
   while (p.xp >= xpNeed(p.level)) {
     p.xp -= xpNeed(p.level);

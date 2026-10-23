@@ -11,6 +11,8 @@ class PlayerProfile {
     required this.dailyAvailable,
     required this.dailyNextAt,
     this.justGranted = 0,
+    this.played = 0,
+    this.won = 0,
   });
 
   final int chips;
@@ -19,6 +21,13 @@ class PlayerProfile {
   final int xpNeed;
   final bool dailyAvailable;
   final DateTime dailyNextAt;
+
+  /// Bitirilen oyun ve kazanılan oyun sayısı (tüm oyunlar birlikte).
+  final int played;
+  final int won;
+
+  /// Kazanma oranı yüzde olarak; hiç oyun yoksa `null`.
+  int? get winPercent => played == 0 ? null : (won * 100 / played).round();
 
   /// Bu çağrıda verilen çip (hoş geldin veya günlük ödül), yoksa 0.
   final int justGranted;
@@ -37,6 +46,8 @@ class PlayerProfile {
       dailyAvailable: daily['available'] == true,
       dailyNextAt: DateTime.fromMillisecondsSinceEpoch(asInt(daily['nextAt'])),
       justGranted: asInt(m['welcomeGranted']) + asInt(m['granted']),
+      played: asInt(m['played']),
+      won: asInt(m['won']),
     );
   }
 }

@@ -4,6 +4,8 @@
 function InitModule(ctx, logger, nk, initializer) {
   initializer.registerRpc('bootstrap', rpcBootstrap);
   initializer.registerRpc('daily_reward', rpcDailyReward);
+  initializer.registerRpc('password_reset_request', rpcPasswordResetRequest);
+  initializer.registerRpc('password_reset_confirm', rpcPasswordResetConfirm);
   initializer.registerRpc('okey_quick', rpcOkeyQuick);
   initializer.registerRpc('okey_private_create', rpcOkeyPrivateCreate);
   initializer.registerRpc('okey_private_join', rpcOkeyPrivateJoin);

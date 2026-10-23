@@ -408,7 +408,11 @@ class ProfileSheet extends ConsumerWidget {
               ],
               const SizedBox(height: Space.lg),
               Row(children: [
-                for (final (v, l) in [('0', 'Maç'), ('%0', 'Kazanma'), ('0', 'Rozet')])
+                for (final (v, l) in [
+                  ('${profile?.played ?? 0}', 'Oyun'),
+                  ('${profile?.won ?? 0}', 'Galibiyet'),
+                  (profile?.winPercent == null ? '–' : '%${profile!.winPercent}', 'Kazanma'),
+                ])
                   Expanded(
                     child: Container(
                       margin: const EdgeInsets.only(right: Space.sm),

@@ -30,6 +30,12 @@ class FakeGateway implements AuthGateway {
       SignedInUser(userId: 'u1', username: username ?? 'Oyuncu_1234', isGuest: false, isNewAccount: false);
 
   @override
+  Future<void> requestPasswordReset(String email) async {}
+
+  @override
+  Future<SignedInUser> resetPassword(String email, String code, String newPassword) => signInWithEmail(email, newPassword);
+
+  @override
   SocketStatus get socketStatus => SocketStatus.disconnected;
 
   @override

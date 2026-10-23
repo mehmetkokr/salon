@@ -224,7 +224,7 @@ function kFinishHand(state, nk, logger, now) {
     var h = state.seats[k];
     if (h.bot) continue;
     try {
-      addXp(nk, h.userId, winners.indexOf(k) >= 0 ? WIN_XP : PLAY_XP);
+      recordGame(nk, h.userId, winners.indexOf(k) >= 0);
     } catch (e) {
       logger.warn('XP yazılamadı: %s', e);
     }
